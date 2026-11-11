@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}History - HR Assistant{% endblock %}
+{% block content %}
+<div class="page-wrap">
+  <h1>Query History</h1>
+  {% if not history %}
+  <p class="hint">No queries yet. Go ask the chatbot something!</p>
+  {% endif %}
+  <div class="history-list">
+    {% for h in history %}
+    <div class="history-item {% if h.escalated %}escalated{% endif %}">
+      <div class="history-query">🧑 {{ h.query }}</div>
+      <div class="history-response">🤖 {{ h.response }}</div>
+      <div class="history-meta">
+        intent: {{ h.intent }} · confidence: {{ "%.2f"|format(h.confidence) }}
+        {% if h.escalated %}· <span class="badge">Escalated to HR</span>{% endif %}
+        · {{ h.created_at[:19] }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

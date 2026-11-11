@@ -1,0 +1,96 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": ["hi", "hello", "hey", "good morning", "good afternoon", "hello there", "hey bot", "hi there"],
+      "response": "Hello! I'm your HR Assistant. I can help with onboarding steps, leave policy, payroll, IT setup, and general HR questions. What would you like to know?"
+    },
+    {
+      "tag": "onboarding_checklist",
+      "patterns": [
+        "what is the onboarding process", "onboarding checklist", "what do I need to do as a new joiner",
+        "joining formalities", "steps to complete onboarding", "new employee checklist",
+        "what documents do I need for onboarding", "first day process", "how does onboarding work"
+      ],
+      "response": "Your onboarding checklist includes: 1) Submit ID proof, address proof and educational certificates 2) Complete the employment agreement 3) Fill in bank details for payroll 4) Attend the HR orientation session 5) Get your laptop and email ID set up by IT 6) Complete mandatory compliance training. You can check off each step in the Onboarding tab."
+    },
+    {
+      "tag": "leave_policy",
+      "patterns": [
+        "what is the leave policy", "how many leaves do I get", "casual leave rules",
+        "sick leave policy", "how to apply for leave", "annual leave entitlement",
+        "paid leave days", "leave balance", "how many paid leaves per year"
+      ],
+      "response": "Employees are entitled to 18 paid leaves per year (12 casual + 6 sick), plus public holidays. Leaves can be applied through the HR portal at least 2 days in advance, except sick leave which can be applied on the day. Unused casual leave up to 6 days can be carried forward to the next year."
+    },
+    {
+      "tag": "payroll_salary",
+      "patterns": [
+        "when is salary credited", "payroll date", "salary slip", "how to download payslip",
+        "when do I get paid", "salary credit date", "payroll process", "tax deduction on salary"
+      ],
+      "response": "Salaries are credited on the last working day of every month. Payslips are available for download from the Employee Self-Service portal under 'Payroll > Payslips'. TDS is deducted as per the declared tax regime and Form 16 is issued annually in June."
+    },
+    {
+      "tag": "wfh_policy",
+      "patterns": [
+        "work from home policy", "can I work remotely", "wfh rules", "remote work policy",
+        "hybrid work", "how many wfh days allowed"
+      ],
+      "response": "Employees can avail up to 2 work-from-home days per week with prior manager approval. Fully remote arrangements require HR and department head sign-off. Please mark WFH days on the attendance portal in advance."
+    },
+    {
+      "tag": "it_setup",
+      "patterns": [
+        "how do I get my laptop", "IT support", "email id not working", "vpn access",
+        "software installation request", "laptop issue", "system access request"
+      ],
+      "response": "For IT support (laptop, email, VPN, or software access), please raise a ticket on the IT Helpdesk portal or email it-support@company.com. New joiners receive laptop and email credentials on Day 1 during orientation."
+    },
+    {
+      "tag": "id_card_access",
+      "patterns": [
+        "how do I get my ID card", "access card", "biometric registration", "office access",
+        "lost my id card"
+      ],
+      "response": "ID cards are issued by the Admin team on your first day. For a lost card, raise a request on the Admin portal; a replacement is issued within 2 working days with a small deduction from reimbursements as per policy."
+    },
+    {
+      "tag": "reimbursement",
+      "patterns": [
+        "how to claim reimbursement", "travel expense claim", "reimbursement process",
+        "submit expense bill", "food allowance claim"
+      ],
+      "response": "Reimbursement claims can be submitted via the Finance portal under 'Expenses > New Claim' with scanned bills attached. Claims are processed within 7 working days after manager approval."
+    },
+    {
+      "tag": "resignation_notice",
+      "patterns": [
+        "how to resign", "notice period", "resignation process", "exit formalities",
+        "how much notice period do I need to serve"
+      ],
+      "response": "The standard notice period is 60 days for confirmed employees and 15 days during probation. To resign, submit your resignation letter through the HR portal; HR will share the exit checklist and schedule an exit interview."
+    },
+    {
+      "tag": "probation_confirmation",
+      "patterns": [
+        "probation period", "when will I be confirmed", "confirmation process",
+        "how long is probation"
+      ],
+      "response": "The standard probation period is 6 months from your date of joining. Your manager will conduct a performance review before confirmation, and HR will share the confirmation letter once approved."
+    },
+    {
+      "tag": "hr_contact_escalation",
+      "patterns": [
+        "I need to talk to HR", "connect me to HR", "escalate my issue", "this is urgent",
+        "I want to raise a complaint", "talk to a human"
+      ],
+      "response": "I've escalated your query to the HR team — someone will reach out to you shortly. You can also reach HR directly at hr-support@company.com."
+    },
+    {
+      "tag": "thanks",
+      "patterns": ["thanks", "thank you", "that helps", "great thanks", "ok thanks"],
+      "response": "You're welcome! Let me know if you have any other HR or onboarding questions."
+    }
+  ]
+}

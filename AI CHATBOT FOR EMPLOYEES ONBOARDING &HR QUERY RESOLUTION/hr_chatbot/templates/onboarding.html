@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Onboarding - HR Assistant{% endblock %}
+{% block content %}
+<div class="page-wrap">
+  <h1>Onboarding Checklist</h1>
+  <div class="progress-bar-track">
+    <div class="progress-bar-fill" style="width: {{ percent }}%;"></div>
+  </div>
+  <p class="hint">{{ percent }}% complete</p>
+
+  <div class="checklist">
+    {% for item in checklist %}
+    <label class="checklist-item">
+      <input type="checkbox" data-item-id="{{ item.id }}" {% if item.completed %}checked{% endif %}>
+      <span class="check-title">{{ item.title }}</span>
+      <span class="check-category">{{ item.category }}</span>
+    </label>
+    {% endfor %}
+  </div>
+</div>
+<script>
+document.querySelectorAll('.checklist-item input').forEach(cb => {
+  cb.addEventListener('change', async (e) => {
+    await fetch('/api/onboarding/toggle', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({item_id: e.target.dataset.itemId, completed: e.target.checked})
+    });
+    location.reload();
+  });
+});
+</script>
+{% endblock %}

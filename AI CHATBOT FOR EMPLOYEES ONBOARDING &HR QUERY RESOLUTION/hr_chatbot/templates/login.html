@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in - HR Assist</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="login-body">
+<div class="login-card">
+  <div class="brand center">HR<span>Assist</span></div>
+  <p class="subtitle">Employee onboarding, IT help and HR query assistant</p>
+  {% if error %}<div class="error-box">{{ error }}</div>{% endif %}
+
+  <h2>Sign in to your account</h2>
+  <p class="hint">Choose your sign-in type. Both options are available here on the same page.</p>
+  <form method="POST" action="{{ url_for('do_login') }}">
+    <label for="login_type">Sign in as</label>
+    <select id="login_type" name="login_type" class="login-select" onchange="updateLoginHint()">
+      <option value="employee" {% if login_type != 'hr_admin' %}selected{% endif %}>Employee</option>
+      <option value="hr_admin" {% if login_type == 'hr_admin' %}selected{% endif %}>HR Administrator</option>
+    </select>
+    <p class="login-role-hint" id="login-role-hint">For employee chat, onboarding checklist and query history.</p>
+    <label for="email">Company email</label>
+    <input id="email" type="email" name="email" placeholder="you@company.com" required autocomplete="username">
+    <label for="password">Password</label>
+    <input id="password" type="password" name="password" required autocomplete="current-password">
+    <button type="submit">Sign in</button>
+  </form>
+
+  <details class="register-details">
+    <summary>New employee? Create an account</summary>
+    <p class="hint">Employee registration only. HR permissions cannot be selected during registration.</p>
+    <form method="POST" action="{{ url_for('register') }}">
+      <label for="register-name">Full name</label>
+      <input id="register-name" type="text" name="name" placeholder="Your full name" required autocomplete="name">
+      <label for="register-email">Company email</label>
+      <input id="register-email" type="email" name="email" placeholder="you@company.com" required autocomplete="email">
+      <label for="register-password">Create password (8+ characters)</label>
+      <input id="register-password" type="password" name="password" minlength="8" required autocomplete="new-password">
+      <button type="submit">Create employee account</button>
+    </form>
+  </details>
+  <p class="hint demo-note">Local demo HR account: <strong>hr.admin@company.com</strong> / <strong>Admin@12345</strong>. Change this default before real deployment.</p>
+</div>
+<script>
+function updateLoginHint() {
+  const type = document.getElementById('login_type').value;
+  document.getElementById('login-role-hint').textContent = type === 'hr_admin'
+    ? 'For HR FAQ management, escalations and reports. HR access requires an HR administrator account.'
+    : 'For employee chat, onboarding checklist and query history.';
+}
+updateLoginHint();
+</script>
+</body>
+</html>

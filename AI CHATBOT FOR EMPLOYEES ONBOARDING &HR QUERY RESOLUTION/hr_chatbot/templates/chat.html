@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Chat - HR Assistant{% endblock %}
+{% block content %}
+<div class="chat-wrap">
+  <h1>Ask the HR Assistant</h1>
+  <p class="hint">Try: "what is the leave policy", "onboarding checklist", "when is salary credited"</p>
+  <div id="chat-window" class="chat-window">
+    <div class="msg bot">
+      <div class="bubble">Hi {{ name }}! I'm your HR Assistant. Ask me anything about onboarding, leave, payroll, IT setup, or company policy.</div>
+    </div>
+  </div>
+  <form id="chat-form" class="chat-form">
+    <input id="chat-input" type="text" placeholder="Type your question..." autocomplete="off" required>
+    <button type="submit">Send</button>
+  </form>
+</div>
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

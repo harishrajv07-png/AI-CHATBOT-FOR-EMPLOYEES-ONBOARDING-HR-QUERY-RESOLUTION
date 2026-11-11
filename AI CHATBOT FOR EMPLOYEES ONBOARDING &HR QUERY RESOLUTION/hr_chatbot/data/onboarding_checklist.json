@@ -1,0 +1,14 @@
+{
+  "checklist": [
+    {"id": 1, "title": "Submit ID proof & address proof", "category": "Documentation"},
+    {"id": 2, "title": "Submit educational certificates", "category": "Documentation"},
+    {"id": 3, "title": "Sign employment agreement", "category": "Documentation"},
+    {"id": 4, "title": "Fill in bank details for payroll", "category": "Payroll"},
+    {"id": 5, "title": "Attend HR orientation session", "category": "Orientation"},
+    {"id": 6, "title": "Collect laptop & office ID card", "category": "IT & Admin"},
+    {"id": 7, "title": "Set up company email & VPN access", "category": "IT & Admin"},
+    {"id": 8, "title": "Complete mandatory compliance training", "category": "Training"},
+    {"id": 9, "title": "Meet reporting manager & team", "category": "Orientation"},
+    {"id": 10, "title": "Review leave & WFH policy", "category": "Policy"}
+  ]
+}

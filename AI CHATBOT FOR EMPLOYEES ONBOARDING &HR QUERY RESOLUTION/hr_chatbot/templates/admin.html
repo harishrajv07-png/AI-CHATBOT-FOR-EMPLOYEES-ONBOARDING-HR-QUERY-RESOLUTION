@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}HR Admin - HR Assist{% endblock %}
+{% block content %}
+<div class="page-wrap">
+  <h1>HR Admin Dashboard</h1>
+  <p class="hint">Manage approved answers in the database, review unknown questions, and handle blocked messages. Changes take effect immediately.</p>
+
+  <section class="history-list">
+    <h2>Knowledge base · Add / edit FAQ</h2>
+    <form id="faq-form" class="admin-form">
+      <input type="hidden" id="faq-id">
+      <label>Category</label><input id="faq-category" required placeholder="IT Support, Security, HR...">
+      <label>Question</label><input id="faq-question" required maxlength="250" placeholder="How do I request VPN access?">
+      <label>Approved answer</label><textarea id="faq-answer" required maxlength="3000" rows="4" placeholder="Write the official answer employees should receive"></textarea>
+      <label>Alternative words / keywords (separate with |)</label><input id="faq-keywords" maxlength="1500" placeholder="vpn access | remote access | connect vpn">
+      <div class="button-row"><button type="submit" id="faq-save">Save FAQ</button><button type="button" id="faq-cancel">Clear form</button></div>
+      <p id="faq-status" class="hint" aria-live="polite"></p>
+    </form>
+    <h3>Current knowledge base ({{ faqs|length }})</h3>
+    {% for f in faqs %}
+      {% if f.active %}
+      <div class="history-item">
+        <strong>{{ f.category }} — {{ f.question }}</strong>
+        <p>{{ f.answer }}</p>
+        <small>Updated by {{ f.updated_by or 'unknown' }} · {{ f.updated_at[:19] }}</small><br>
+        <button type="button" class="faq-edit" data-id="{{ f.id }}" data-category="{{ f.category|e }}" data-question="{{ f.question|e }}" data-answer="{{ f.answer|e }}" data-keywords="{{ f.keywords|e }}">Edit</button>
+        <button type="button" class="faq-delete" data-id="{{ f.id }}">Deactivate</button>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </section>
+
+  <section class="history-list">
+    <h2>Blocked messages reported to HR</h2>
+    <p class="hint">The safety filter blocks likely spam, abusive/threatening text, URLs and repeated garbage before it reaches the answer engine.</p>
+    {% for r in reports %}
+      <div class="history-item {% if r.status == 'open' %}escalated{% endif %}" id="report-{{ r.id }}">
+        <strong>{{ r.user_email }}</strong>: {{ r.message }}
+        <div class="history-meta">Reason: {{ r.reason }} · {{ r.created_at[:19] }} · <span class="badge">{{ r.status }}</span>
+        {% if r.status == 'open' %}<button type="button" class="report-resolve" data-id="{{ r.id }}">Mark reviewed</button>{% endif %}</div>
+      </div>
+    {% else %}<p class="hint">No blocked messages reported.</p>{% endfor %}
+  </section>
+
+  <section class="history-list">
+    <h2>Questions needing HR answers</h2>
+    {% for e in escalations %}
+      <div class="history-item {% if e.status == 'open' %}escalated{% endif %}">
+        <strong>{{ e.user_email }}</strong>: {{ e.query }}
+        <div class="history-meta">{{ e.created_at[:19] }} · <span class="badge">{{ e.status }}</span>
+        {% if e.status == 'open' %}<button type="button" class="resolve-btn" data-id="{{ e.id }}">Mark resolved</button>{% endif %}</div>
+      </div>
+    {% else %}<p class="hint">No unanswered questions yet.</p>{% endfor %}
+  </section>
+</div>
+<script>
+const byId = id => document.getElementById(id);
+const faqForm = byId('faq-form');
+function clearFaq(){ faqForm.reset(); byId('faq-id').value=''; byId('faq-save').textContent='Save FAQ'; byId('faq-status').textContent=''; }
+byId('faq-cancel').addEventListener('click', clearFaq);
+document.querySelectorAll('.faq-edit').forEach(btn => btn.addEventListener('click', () => {
+  byId('faq-id').value=btn.dataset.id; byId('faq-category').value=btn.dataset.category;
+  byId('faq-question').value=btn.dataset.question; byId('faq-answer').value=btn.dataset.answer;
+  byId('faq-keywords').value=btn.dataset.keywords; byId('faq-save').textContent='Update FAQ';
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+faqForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  const payload={id:byId('faq-id').value || null,category:byId('faq-category').value,question:byId('faq-question').value,answer:byId('faq-answer').value,keywords:byId('faq-keywords').value};
+  const res=await fetch('/api/admin/faq',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  const data=await res.json();
+  if(!res.ok){byId('faq-status').textContent=data.error || 'Could not save FAQ.';return;}
+  location.reload();
+});
+document.querySelectorAll('.faq-delete').forEach(btn=>btn.addEventListener('click',async()=>{
+  if(!confirm('Deactivate this FAQ? It will no longer be used by the bot.')) return;
+  const r=await fetch('/api/admin/faq/delete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:btn.dataset.id})});
+  if(r.ok) location.reload(); else alert('Could not deactivate FAQ.');
+}));
+document.querySelectorAll('.report-resolve').forEach(btn=>btn.addEventListener('click',async()=>{
+  const r=await fetch('/api/admin/report/resolve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:btn.dataset.id})});
+  if(r.ok) location.reload(); else alert('Could not update report.');
+}));
+document.querySelectorAll('.resolve-btn').forEach(btn=>btn.addEventListener('click',async()=>{
+  const r=await fetch('/api/admin/resolve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({escalation_id:btn.dataset.id})});
+  if(r.ok) location.reload(); else alert('Could not update query.');
+}));
+</script>
+{% endblock %}
